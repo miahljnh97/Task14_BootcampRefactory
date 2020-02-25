@@ -1,10 +1,1 @@
-﻿using System;
-namespace TaskLINQ
-{
- public class furnitures
- {
-   public furnitures()
-   {
-   }
- }
-}
+["Brown Chair","Big Desk"]
