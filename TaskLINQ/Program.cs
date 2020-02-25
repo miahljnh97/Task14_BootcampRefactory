@@ -134,26 +134,12 @@ namespace TaskLINQ
 
         public static void lowerThan()
         {
-            int grandTotalAri = data2.Where(k => k.Customer.Name == "Ari").Sum(k => k.Items.Sum(l => l.Price * l.Qty));
-            int grandTotalRirin = data2.Where(k => k.Customer.Name == "Ririn").Sum(k => k.Items.Sum(l => l.Price * l.Qty));
-            int grandTotalAnnis = data2.Where(k => k.Customer.Name == "Annis").Sum(k => k.Items.Sum(l => l.Price * l.Qty));
-
-            List<string> Nama = new List<string>();
-            if (grandTotalAri < 300000)
-            {
-                Nama.Add("Ari");
-            }
-            else if (grandTotalRirin < 300000)
-            {
-                Nama.Add("Ririn");
-            }
-            else if (grandTotalAnnis < 300000)
-            {
-                Nama.Add("Annis");
-            }
+            var hasil = data2.GroupBy(k => k.Customer.Name)
+                .Select(k => new { name = k.First().Customer.Name, total = k.Select(l => l.Items.Sum(m => m.Price * m.Qty)).Sum() })
+                .Where(k => k.total < 300000);
 
             Console.WriteLine("People who have purchases with total lower than 300000: ");
-            Console.WriteLine(String.Join("\n", Nama));
+            Console.WriteLine(String.Join("\n", hasil));
             Console.WriteLine(" ");
         }
     }
