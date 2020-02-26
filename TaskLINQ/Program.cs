@@ -25,6 +25,7 @@ namespace TaskLINQ
             Soal3.furnitures();
             Soal3.purchased();
             Soal3.brownColor();
+            Soal4.purchasedAt16();
 
 
         }
@@ -32,7 +33,7 @@ namespace TaskLINQ
 
     public class Database1
     {
-        protected static string json1 = File.ReadAllText(@"/Users/user/Projects/Task3_BootcampRefactory/Task3_BootcampRefactory/Satuu.json");
+        protected static string json1 = File.ReadAllText(@"/Users/user/Projects/Task14_BootcampRefactory/TaskLINQ/Satu.Json");
         protected static List<User1> data1 = JsonConvert.DeserializeObject<List<User1>>(json1);
     }
 
@@ -108,7 +109,7 @@ namespace TaskLINQ
 
     public class Database2
     {
-        protected static string json2 = File.ReadAllText(@"/Users/user/Projects/Task3_BootcampRefactory/Task3_BootcampRefactory/Dua.json");
+        protected static string json2 = File.ReadAllText(@"/Users/user/Projects/Task14_BootcampRefactory/TaskLINQ/Dua.Json");
         protected static List<User2> data2 = JsonConvert.DeserializeObject<List<User2>>(json2);
     }
 
@@ -133,10 +134,11 @@ namespace TaskLINQ
         }
 
         public static void lowerThan()
-        {
+        {                                      
             var hasil = data2.GroupBy(k => k.Customer.Name)
                 .Select(k => new { name = k.First().Customer.Name, total = k.Select(l => l.Items.Sum(m => m.Price * m.Qty)).Sum() })
-                .Where(k => k.total < 300000);
+                .Where(k => k.total < 300000)
+                .Select(k => k.name);
 
             Console.WriteLine("People who have purchases with total lower than 300000: ");
             Console.WriteLine(String.Join("\n", hasil));
@@ -146,7 +148,7 @@ namespace TaskLINQ
 
     public class Database3
     {
-        protected static string json3 = File.ReadAllText(@"/Users/user/Projects/Task3_BootcampRefactory/Task3_BootcampRefactory/Tiga.json");
+        protected static string json3 = File.ReadAllText(@"/Users/user/Projects/Task14_BootcampRefactory/TaskLINQ/Tiga.json");
         protected static List<User3> data3 = JsonConvert.DeserializeObject<List<User3>>(json3);
     }
 
@@ -214,5 +216,31 @@ namespace TaskLINQ
             File.WriteAllText(@"/Users/user/Projects/Task14_BootcampRefactory/TaskLINQ/all-browns.json", BCFile);
         }
 
+    }
+
+    //Ini adalah soal nomor 3 dengan purchased bertipe timestamp
+    public class Database4
+    {
+        protected static string json4 = File.ReadAllText(@"/Users/user/Projects/Task14_BootcampRefactory/TaskLINQ/Empat.json");
+        protected static List<User4> data4 = JsonConvert.DeserializeObject<List<User4>>(json4);
+    }
+
+    public class Soal4 : Database4
+    {
+        public static void purchasedAt16()
+        {
+            var hasil = data4
+                .Where(x => new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(x.Purchased_at).Day == 16 &&
+            new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(x.Purchased_at).Month == 01 &&
+            new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc).AddSeconds(x.Purchased_at).Year == 2020)
+                .Select(k => k.Name);
+
+            Console.WriteLine("Items that was purchases at 16 january 2020: ");
+            Console.WriteLine(String.Join("\n", hasil));
+            Console.WriteLine(" ");
+
+            var purchFile = JsonConvert.SerializeObject(hasil);
+            File.WriteAllText(@"/Users/user/Projects/Task14_BootcampRefactory/TaskLINQ/purchased-at-2020-01-06-part2.json", purchFile);
+        }
     }
 }

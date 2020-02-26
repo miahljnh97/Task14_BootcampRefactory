@@ -64,4 +64,14 @@ namespace TaskLINQ
         public string Name { get; set; }
         public int Room_id { get; set; }
     }
+
+    public class User4
+    {
+        public int Inventory_id { get; set; }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public List<string> Tags { get; set; }
+        public int Purchased_at { get; set; }
+        public Placement Placement { get; set; }
+    }
 }
